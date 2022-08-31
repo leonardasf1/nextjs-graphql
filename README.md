@@ -1,4 +1,4 @@
-# Next.js GraphQl
+# Next.js GraphQL
 
 ---
 
@@ -31,7 +31,7 @@
 
 ---
 
-### Основано на замечательном курсе [webDev по NestJS](https://github.com/YauhenKavalchuk/next-js):
+### Основано на замечательном курсе [webDev по NextJS](https://github.com/YauhenKavalchuk/next-js):
 - Клонируйте репозиторий: `git clone https://github.com/YauhenKavalchuk/next-js.git`
 - Перейдите в папку с проектом: `cd next-js`
 - Установите зависимости: `yarn install`
