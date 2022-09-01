@@ -1,3 +1,4 @@
+@import "../pages/auth/Auth.scss";
 html,
 body {
   padding: 0;
@@ -8,8 +9,7 @@ body {
   font-family: Helvetica, sans-serif;
   background: #453737;
   color: #fff6db;
-  font-size: 18px;
-  font-weight: 100;
+  font-size: 15px;
 }
 
 #__next {

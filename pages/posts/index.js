@@ -40,9 +40,9 @@ export default Posts;
 
 const query = `query FilteredPosts($options:PageQueryOptions) {
   posts(options:$options) {
-      data {
-        id
-        title
-      }
+    data {
+      id
+      title
+    }
   }
 }`

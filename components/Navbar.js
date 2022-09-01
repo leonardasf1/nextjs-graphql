@@ -7,6 +7,7 @@ const navigation = [
   { id: 1, title: 'Главная', path: '/' },
   { id: 2, title: 'Публикации', path: '/posts' },
   { id: 3, title: 'Контакты', path: '/contacts' },
+  { id: 4, title: 'Войти', path: '/auth/login' }
 ];
 
 const Navbar = () => {
