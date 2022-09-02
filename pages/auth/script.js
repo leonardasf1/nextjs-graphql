@@ -1,8 +1,5 @@
-import {
-  restAuth,
-  restNewUser,
-  restGetUser
-} from "./rest"
+import { restAuth } from "./rest"
+import { graphNewUser, graphGetUser } from "./graphql"
 // import { authAction, showLoader, hideLoader } from "../../redux/appReducer"
 
 export function loginFormHandler(e, router) {
@@ -29,14 +26,14 @@ export function loginFormHandler(e, router) {
           } else { errorHandler(email, data.error.message) }
         }
         else if (data.registered) {
-          restGetUser(data.email, data.idToken)
+          graphGetUser(data.email)
           .then(json => {
-            let user = jsonToArr(json)[0]
+            let user = jsonToArr(json)[0].users.data[0]
+            console.log(user, "подключить GraphQL сервер")
             let authObj = {
-              "id": user.id,
-              "name": user.name,
-              "tel": user.tel,
-              "status": user.status,
+              // "id": user.id,
+              // "name": user.name,
+              // "tel": user.phone,
               "idToken": data.idToken,
               "email": data.email,
               "timer": Date.now() + data.expiresIn * 1000
@@ -86,7 +83,8 @@ export function signupFormHandler(e, router) {
 
         // dispatch(hideLoader())
         // window.location.hash = "#login"
-        restNewUser( 
+        // restNewUser( 
+        graphNewUser(
           name.value,
           email.value,
           tel.value
