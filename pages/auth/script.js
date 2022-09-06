@@ -1,6 +1,6 @@
-import { restAuth } from "./rest"
-import { graphNewUser, graphGetUser } from "./graphql"
-// import { authAction, showLoader, hideLoader } from "../../redux/appReducer"
+import { restAuth } from "./rest";
+import { getData_GraphQL } from "../api/graphQLClient";
+// import { authAction, showLoader, hideLoader } from "../../redux/appReducer";
 
 export function loginFormHandler(e, router) {
 
@@ -26,23 +26,29 @@ export function loginFormHandler(e, router) {
           } else { errorHandler(email, data.error.message) }
         }
         else if (data.registered) {
-          graphGetUser(data.email)
+          getData_GraphQL(
+            `query GetUserByEmail {
+              getUserByEmail(email:"${email.value}") {
+                id
+                name
+                phone
+              }
+            }`
+          )
           .then(json => {
-            let user = jsonToArr(json)[0].users.data[0]
-            console.log(user, "подключить GraphQL сервер")
+            let user = json.getUserByEmail
             let authObj = {
-              // "id": user.id,
-              // "name": user.name,
-              // "tel": user.phone,
+              "id": user.id,
+              "name": user.name,
+              "tel": user.phone,
               "idToken": data.idToken,
-              "email": data.email,
+              "email": email.value,
               "timer": Date.now() + data.expiresIn * 1000
             }
             sessionStorage.setItem("auth",
                   JSON.stringify(authObj)
             )
             // dispatch(authAction(authObj))
-            // window.location.hash = '#home'
             router.push('/');
           })
         }
@@ -82,20 +88,21 @@ export function signupFormHandler(e, router) {
       } else {
 
         // dispatch(hideLoader())
-        // window.location.hash = "#login"
         // restNewUser( 
-        graphNewUser(
-          name.value,
-          email.value,
-          tel.value
+        getData_GraphQL(
+          `mutation CreateUser {
+            createUser(
+            input: {
+              name: "${name.value}"
+              username: "${name.value}"
+              email: "${email.value}"
+              phone: "${tel.value}"
+            })
+          }`
         )
-        router.push('/');
+        router.push('/auth/login');
       }
     })
-}
-function jsonToArr(json) {
-    return Object.keys(json)
-    .map( key => ({ ...json[key], id: key }))
 }
 
 function isValidAuth(value, form) {

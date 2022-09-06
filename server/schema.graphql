@@ -1,0 +1,110 @@
+type User {
+	id: ID
+	name: String
+	username: String
+	email: String
+  phone: String
+	address: Address
+	company: Company
+}
+input UserInput {
+	id: ID
+	name: String
+	username: String!
+	email: String!
+  phone: String
+	address: AddressInput
+	company: CompanyInput
+}
+
+type Address {
+	city: String
+	street: String
+	suite: String
+	zipcode: String
+}
+input AddressInput {
+	city: String!
+	street: String
+	suite: String
+	zipcode: String
+}
+
+type Company { name: String }
+input CompanyInput { name: String }
+
+# ----------------------------------
+
+type Post {
+	id: ID
+	body: String
+	user: User
+	title: String
+}
+input PostInput {
+	id: ID
+	body: String!
+	user: UserInput!
+	title: String!
+}
+
+
+
+# ------------------------------------
+
+type Query {
+	getAllPosts: [Post]!
+	getPost(id: ID!): Post!
+	getAllUsers: [User]
+	getUser(id: ID): User
+	getUserByEmail(email: String): User
+}
+type Mutation {
+	addPost(input: PostInput!): Boolean!
+	createUser(input: UserInput): Boolean!
+}
+# ------------------------------------ запросы
+# mutation {
+#   createUser(input: {
+# 	  username: "Petya"
+#     email: "email@email.te"
+#   	}
+#   )
+# }
+# query GetAllUsers {
+#   getAllUsers {
+#     id
+#     name
+#   }
+# }
+# query GetUser($id: ID = ${id}) {
+#   getUser(id: $id) {
+#     name
+#     username
+#     email
+#     address {
+#       city
+#       street
+#       suite
+#       zipcode
+#     }
+#     company {
+#       name
+#     }
+#   }
+# }
+# fragment fragBook on Book{
+# 	id
+# 	title
+# 	description
+# 	author {
+# 		id
+# 		firstName
+# 		lastName
+# 	}
+# }
+# query GetAllBooks {
+# 	getAllBooks {
+# 		... fragBook
+# 	}
+# }

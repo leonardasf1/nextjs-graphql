@@ -1,24 +1,25 @@
 import Head from "next/head";
 import Link from "next/link";
+import { getData_GraphQL } from "../api/graphQLClient";
 import Heading from "../../components/Heading";
 
 export const getStaticProps = async () => {
 
-  const response = await fetch(process.env.GQL_HOST, {
-    method: "POST",
-    headers: {
-      "Content-Type": 'application/json'
-    },
-    body: JSON.stringify({ query })
-  });
-  const data = await response.json();
+  const query = `
+    query GetAllPosts{
+      getAllPosts {
+        id
+        title
+      }
+    }
+  `
 
-  if (!data) { return { notFound: true } }
+  const { getAllPosts } = await getData_GraphQL(query)
+  return { props: { posts: getAllPosts } }
 
-  return { props: { posts: data.data.posts.data } }
 };
 
-const Posts = ({ posts }) => { 
+const Posts = ({ posts }) => {
   return (
     <>
       <Head>
@@ -37,12 +38,3 @@ const Posts = ({ posts }) => {
 };
 
 export default Posts;
-
-const query = `query FilteredPosts($options:PageQueryOptions) {
-  posts(options:$options) {
-    data {
-      id
-      title
-    }
-  }
-}`

@@ -43,7 +43,7 @@ const signupHTML = (
       </div>
       <div className="textfield--float-label">
         <span className="error"></span>
-        <input type="tel" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" name="tel" id="tel" onBlur={(e) => validAuth(e)} />
+        <input type="tel" name="tel" id="tel" onBlur={(e) => validAuth(e)} />
       <label>Номер мобильного телефона</label>
       </div>
     </div>

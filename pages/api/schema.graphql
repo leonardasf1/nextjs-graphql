@@ -1,0 +1,101 @@
+# ---------------- запросы
+query GetAllUsers {
+  getAllUsers {
+    id
+    username
+  }
+}
+query GetUser {
+  getUser(id:{id}) {
+    name
+    username
+    email
+    phone
+    address {
+      city
+      street
+      suite
+      zipcode
+    }
+    company {
+      name
+    }
+  }
+}
+query GetUserByEmail {
+  getUserByEmail(email:"${email}") {
+    id
+    name
+    username
+    phone
+    address {
+      city
+      street
+      suite
+      zipcode
+    }
+    company {
+      name
+    }
+  }
+}
+mutation CreateUser {
+  createUser(
+    input: {
+      name: {name}
+      username: {username}
+      email: {email}
+      phone: "${tel}"
+      address: {
+        city: {city}
+        street: {street}
+        suite: {suite}
+        zipcode: {zipcode}
+      }
+      phone: "${tel}"
+      company: {
+       name: {companyName}
+      }
+    }
+  )
+}
+
+query GetAllPosts{
+  getAllPosts {
+    id
+    title
+  }
+}
+query GetPost($id: ID = ${id}) {
+  getPost(id: $id) {
+    title
+    body
+    user {
+      email
+      username
+    }
+  }
+}
+# mutation CreatePost {
+#   createPost(
+#     input: {
+#       body: {body}
+#       user: {
+#       	email: {email}
+#       	username: {username}
+#       }
+#       title: {title}
+#     }
+#   )
+# }
+
+# mutation EditUser {
+#   editUser(id:${id}, input: {
+#     ${editedField}: ${value}
+#   }) {
+#     ${editedField}
+#   }
+# }
+# mutation DeleteUser {
+#   deleteUser(id:${id})
+# }

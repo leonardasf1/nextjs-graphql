@@ -1,61 +1,44 @@
 import Head from "next/head";
+import { getData_GraphQL } from "../api/graphQLClient";
 import PostInfo from "../../components/PostInfo";
 
 export const getStaticPaths = async () => {
 
-  const query = `query FilteredPosts($options:PageQueryOptions) {
-    posts(options:$options) {
-      data {
+  const query = `
+    query GetAllPosts{
+      getAllPosts {
         id
         title
       }
     }
-  }`
+  `
+  const { getAllPosts } = await getData_GraphQL(query);
 
-  const response = await fetch(process.env.GQL_HOST, {
-    method: "POST",
-    headers: {
-      "Content-Type": 'application/json'
-    },
-    body: JSON.stringify({ query })
-  });
-
-  const data = await response.json();
-
-  const paths = data.data.posts.data.map(({ id }) => ({
+  const paths = getAllPosts.map(({ id }) => ({
     params: { id: id.toString() }
   }));
 
   return {
     paths,
     fallback: false,
-  }
+  };
 };
 
 export const getStaticProps = async (context) => {
 
   const { id } = context.params;
 
-  const query = `query Post($id: ID = ${id}) {
-    post(id: $id) {
-      title
-      body
+  const query = `
+    query GetPost($id: ID = ${id}) {
+      getPost(id: $id) {
+        title
+        body
+      }
     }
-  }`
+  `;
+  const { getPost } = await getData_GraphQL(query);
+  return { props: { post: getPost } };
 
-  const response = await fetch(process.env.GQL_HOST, {
-    method: "POST",
-    headers: {
-      "Content-Type": 'application/json'
-    },
-    body: JSON.stringify({ query })
-  });
-
-  const data = await response.json();
-
-  if (!data) { return { notFound: true, } }
-
-  return { props: { post: data.data.post } }
 };
 
 const Post = ({ post }) => (
@@ -68,5 +51,3 @@ const Post = ({ post }) => (
 );
 
 export default Post;
-
-

@@ -1,8 +1,8 @@
 import Heading from "./Heading";
 
 const ContactInfo = ({ contact }) => {
-  const { name, email, address } = contact || {};
-  const { street, suite, city, zipcode } = address || {};
+  const { username, address } = contact || {};
+  // const { city } = address || {};
 
   if (!contact) {
     return <Heading tag="h3" text="Empty contact" />
@@ -10,15 +10,15 @@ const ContactInfo = ({ contact }) => {
 
   return (
     <>
-      <Heading tag="h3" text={name} />
-      <div>
-        <strong>Email: </strong>
-        {email}
-      </div>
-      <div>
-        <strong>Address: </strong>
-        {`${street}, ${suite}, ${city}, ${zipcode}`}
-      </div>
+      <Heading tag="h3" text={`${username} . ${address.city}`} />
+      {/* <div>
+         <strong>name: </strong>
+         {name}
+       </div>
+       <div>
+         <strong>Address: </strong>
+         {`${city}, ${zipcode}`}
+       </div>*/}
     </>
   );
 }
