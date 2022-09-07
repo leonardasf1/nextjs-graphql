@@ -9,11 +9,10 @@ export const getData_GraphQL = async (query) => {
   return data.data;
 
 }
-const serverUrl = "http://localhost:6006/graphql?"
 
 const graphQlFetch = async (query) => {
 
-  return fetch(serverUrl, {
+  return fetch(process.env.GQL_HOST, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query })
